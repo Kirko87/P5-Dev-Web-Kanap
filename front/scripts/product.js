@@ -41,15 +41,19 @@ async function main(){
           alert("seleziona una quantità superiore a 0")
           return 
       }
-     /* if (item.colors=[""]){
-          alert("seleziona un colore")
-          return
-      }*/
+    
+     /*     if (coloreSelezionato === ""){
+        alert("seleziona un colore")
+        return
+        }
+    */
       
      /* recupero valori colore del select */
       var colors=document.getElementById("colors")
       var coloreSelezionato = colors.options[colors.selectedIndex].value;  
 
+
+ 
      //definisco valori Array
      const cartItems = JSON.parse (localStorage.getItem("carrello")) || []
      let cartItem = cartItems.find(function(_cartItem){
