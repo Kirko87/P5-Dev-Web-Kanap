@@ -27,7 +27,7 @@ async function main() {
 
 
         const modificaQ = contenitorePrimo.querySelector(".itemQuantity")
-
+        const daEliminare= contenitorePrimo.querySelector("#cart__item")
         const deleteItemButton = contenitorePrimo.querySelector("#deleteItem")
 
 
@@ -48,8 +48,10 @@ async function main() {
         //delete products
 
          deleteItemButton.addEventListener("click", function () {
-                 var re = carrelloProdottiJs.splice(index, 1);
-                 console.log(re);
+            const itemIndex = carrelloProdottiJs.indexOf(oggettiCarrello)
+            carrelloProdottiJs.splice(itemIndex, 1);
+            daEliminare.remove()
+            //document.querySelector(`[data-id=${oggettiCarrello.id}][data-color=${oggettiCarrello.color}]`).remove()
                  let carrello = JSON.stringify(carrelloProdottiJs);
                  localStorage.setItem("carrello", carrello);
 
