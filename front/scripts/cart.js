@@ -9,7 +9,6 @@ async function main() {
 
     const itemList = []
 
-
     for (index in carrelloProdottiJs) {
         const oggettiCarrello = carrelloProdottiJs[index]
         const risposta = await fetch('http://localhost:3000/api/products/' + oggettiCarrello.id)
@@ -27,11 +26,11 @@ async function main() {
 
 
         const modificaQ = contenitorePrimo.querySelector(".itemQuantity")
-        const daEliminare= contenitorePrimo.querySelector("#cart__item")
+        const daEliminare = contenitorePrimo.querySelector("#cart__item")
         const deleteItemButton = contenitorePrimo.querySelector("#deleteItem")
 
 
-        //change quantity produits
+        //CHANGE quantity produits
 
 
         modificaQ.addEventListener("change", function () {
@@ -41,23 +40,26 @@ async function main() {
             localStorage.setItem("carrello", carrello);
 
             calcolaTotale(carrelloProdottiJs, itemList)
-
+            
         })
 
 
-        //delete products
+        //DELETE products
 
-         deleteItemButton.addEventListener("click", function () {
+        deleteItemButton.addEventListener("click", function () {
+            /*indexOf=Restituisce un valore numerico che rappresenta la
+             posizione dell’elemento nella stringa. Se non trova il valore restituisce -1. */
             const itemIndex = carrelloProdottiJs.indexOf(oggettiCarrello)
+            //console.log(itemIndex);
             carrelloProdottiJs.splice(itemIndex, 1);
             daEliminare.remove()
-            //document.querySelector(`[data-id=${oggettiCarrello.id}][data-color=${oggettiCarrello.color}]`).remove()
-                 let carrello = JSON.stringify(carrelloProdottiJs);
-                 localStorage.setItem("carrello", carrello);
 
-                 calcolaTotale(carrelloProdottiJs, itemList);
+            let carrello = JSON.stringify(carrelloProdottiJs);
+            localStorage.setItem("carrello", carrello);
 
-             })
+            calcolaTotale(carrelloProdottiJs, itemList);
+
+        })
 
         //registra modifiche in balise globale <section id="cart__items">
         const baliseRec = document.getElementById("cart__items")
@@ -66,7 +68,8 @@ async function main() {
 
 
     calcolaTotale(carrelloProdottiJs, itemList)
-
+  controlloNome()
+    
 }
 
 
@@ -88,9 +91,34 @@ function calcolaTotale(cartProduits, listaElementi) {
     }
     document.getElementById("totalQuantity").innerText = totalQuantity
     document.getElementById("totalPrice").innerText = totalPrice
-
+    
 }
 
+
+
+function controlloNome() {
+    let nome = document.getElementById("firstName")
+    //console.log(nome);
+    var varNome = /^[A-Za-z àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,30}$/;
+    
+    
+    nome.addEventListener('change', () => {
+
+            if (varNome.test(nome) === false) {
+                console.log(nome.value);
+                console.log('errore input');
+                alert("inserire un nome valido, senza numeri o caratteri speciali");
+                document.getElementById("firstNameErrorMsg").innerHTML = "inserire un nome valido, senza numeri o caratteri speciali";
+
+            }
+              
+            console.log(varNome.test(nome))
+        });
+
+    
+   
+    
+}
 
 
 main(

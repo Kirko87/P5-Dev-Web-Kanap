@@ -6,7 +6,7 @@ async function main() {
     const item = await response.json()
 
     /* recupero prezzo, nome articolo e descrizione*/
-    //console.log(item)
+    console.log(item)
 
     document.querySelector("#price").innerText = item.price;
     document.querySelector("#title").innerText = item.name;
@@ -42,16 +42,20 @@ async function main() {
             return
         }
 
-        /*     if (coloreSelezionato === ""){
-           alert("seleziona un colore")
-           return
-           }
-       */
+      
+        
+
+      
 
         /* recupero valori colore del select */
         var colors = document.getElementById("colors")
         var coloreSelezionato = colors.options[colors.selectedIndex].value;
 
+        if (coloreSelezionato === "") {
+            alert('séléctionnez une couleur');
+            return
+          }
+          
         //definisco valori Array
         const cartItems = JSON.parse(localStorage.getItem("carrello")) || []
         let cartItem = cartItems.find(function (_cartItem) {
@@ -71,6 +75,7 @@ async function main() {
             cartItems.push(cartItem)
         }
 
+       
         //trasforma oggetto JS in Json
 
         let carrello = JSON.stringify(cartItems);
