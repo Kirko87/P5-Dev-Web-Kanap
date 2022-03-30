@@ -100,6 +100,8 @@ async function main() {
             body: JSON.stringify(payload)
         })
         const commande = await rispostaServer.json();
+
+
         console.log(commande);
         console.log(commande.orderId);//id della comanda
 
@@ -111,7 +113,7 @@ async function main() {
         const commandeButton = document.getElementById("order")  
         commandeButton.addEventListener('click', () => {
         
-            location.replace('http://localhost:3000/api/products/order/'+idNumber)
+            location.replace('http://localhost:3000/api/products/'+idNumber)
             })
     
     
