@@ -1,11 +1,14 @@
-async function main() {
+let nome = document.getElementById("firstName")
+let cognome = document.getElementById("lastName")
+let indirizzo = document.getElementById("address")
+let citta = document.getElementById("city")
 
+async function main() {
 
     var datiOggettiCestino = localStorage.getItem("carrello");
     //console.log(datiOggettiCestino);
     const carrelloProdottiJs = JSON.parse(datiOggettiCestino)
     //console.log(carrelloProdottiJs);
-
 
     const itemList = []
 
@@ -24,14 +27,11 @@ async function main() {
         contenitorePrimo.querySelector(".cart__product__price").innerText = item.price + "€"
         contenitorePrimo.querySelector(".itemQuantity").value = oggettiCarrello.quantita
 
-
         const modificaQ = contenitorePrimo.querySelector(".itemQuantity")
         const daEliminare = contenitorePrimo.querySelector("#cart__item")
         const deleteItemButton = contenitorePrimo.querySelector("#deleteItem")
 
-
         //CHANGE quantity produits
-
 
         modificaQ.addEventListener("change", function () {
             const quantityMOD = parseInt(modificaQ.value)
@@ -40,14 +40,14 @@ async function main() {
             localStorage.setItem("carrello", carrello);
 
             calcolaTotale(carrelloProdottiJs, itemList)
-            
+
         })
 
 
         //DELETE products
 
         deleteItemButton.addEventListener("click", function () {
-            /*indexOf=Restituisce un valore numerico che rappresenta la
+            /* "indexOf" restituisce un valore numerico che rappresenta la
              posizione dell’elemento nella stringa. Se non trova il valore restituisce -1. */
             const itemIndex = carrelloProdottiJs.indexOf(oggettiCarrello)
             //console.log(itemIndex);
@@ -68,13 +68,60 @@ async function main() {
 
 
     calcolaTotale(carrelloProdottiJs, itemList)
-  controlloNome()
+    controlloNome()
+
+    /* SUBMIT del formulario con funzione*/
+
+    document.getElementById("formulario").addEventListener('submit', async function (event) {
+        event.preventDefault()
+        /* payload= dati da inviare*/
+        payload = {
+            contact: {
+                firstName: nome.value,
+                lastName: cognome.value,
+                address: indirizzo.value,
+                city: citta.value,
+                email: document.getElementById("email").value
+            },
+            products: carrelloProdottiJs.reduce(function (idList, oggettiCarrello) {
+                for (let i = 0; i < oggettiCarrello.quantita; i++) {
+                    idList.push(oggettiCarrello.id)
+                }
+                return idList
+            }, [])
+        }
+
+        console.table(payload);//".table" mette in  tabella il risultato
+        const rispostaServer = await fetch('http://localhost:3000/api/products/order', {
+            method: "post",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        const commande = await rispostaServer.json();
+        console.log(commande);
+        console.log(commande.orderId);//id della comanda
+
+        /*INVIO ID comanda */
+        localStorage.setItem("idComanda", commande.orderId);
+
+        var idNumber = commande.orderId
+
+        const commandeButton = document.getElementById("order")  
+        commandeButton.addEventListener('click', () => {
+        
+            location.replace('http://localhost:3000/api/products/order/'+idNumber)
+            })
+    
+    
+
+    })
     
 }
 
 
-//calcolaTotale function 
-
+/*FUNZIONE calcolaTotale function*/
 
 function calcolaTotale(cartProduits, listaElementi) {
     let totalQuantity = 0
@@ -91,33 +138,75 @@ function calcolaTotale(cartProduits, listaElementi) {
     }
     document.getElementById("totalQuantity").innerText = totalQuantity
     document.getElementById("totalPrice").innerText = totalPrice
-    
+
 }
 
 
-
+/*FUNZIONE controllo campi tabella*/
 function controlloNome() {
-    let nome = document.getElementById("firstName")
+
     //console.log(nome);
-    var varNome = /^[A-Za-z àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{3,30}$/;
-    
-    
-    nome.addEventListener('change', () => {
+    var var1 = /^[A-Za-z -.àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{2,30}$/;
+    var var2 = /^[A-Za-z 0-9 "',-.àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð]{6,30}$/;
 
-            if (varNome.test(nome) === false) {
-                console.log(nome.value);
-                console.log('errore input');
-                alert("inserire un nome valido, senza numeri o caratteri speciali");
-                document.getElementById("firstNameErrorMsg").innerHTML = "inserire un nome valido, senza numeri o caratteri speciali";
+    //NOME
+    nome.addEventListener('input', () => {
 
-            }
-              
-            console.log(varNome.test(nome))
-        });
+        if (var1.test(nome.value) === false) {
+            console.log(nome.value);
+            //console.log('errore input');
+            console.log(var1.test(nome))
+            document.getElementById("firstNameErrorMsg").innerHTML = "inserire un NOME valido, senza numeri o caratteri speciali, dai 2 ai 30 caratteri.";
 
-    
-   
-    
+        } else {
+            document.getElementById("firstNameErrorMsg").innerHTML = ""
+        }
+    });
+
+    //COGNOME
+    cognome.addEventListener('input', () => {
+
+        if (var1.test(cognome.value) === false) {
+            console.log(cognome.value);
+            //console.log('errore input');
+            console.log(var1.test(cognome))
+            document.getElementById("lastNameErrorMsg").innerHTML = "inserire un COGNOME valido, senza numeri o caratteri speciali, dai 2 ai 30 caratteri.";
+
+        } else {
+            document.getElementById("lastNameErrorMsg").innerHTML = ""
+        }
+    });
+
+    //INDIRIZZO
+    indirizzo.addEventListener('input', () => {
+
+        if (var2.test(indirizzo.value) === false) {
+            console.log(indirizzo.value);
+            //console.log('errore input');
+            console.log(var2.test(indirizzo))
+            document.getElementById("addressErrorMsg").innerHTML = "inserire un INDIRIZZO valido.";
+
+        } else {
+            document.getElementById("addressErrorMsg").innerHTML = ""
+        }
+    });
+
+    //CITTà
+    citta.addEventListener('input', () => {
+
+        if (var1.test(citta.value) === false) {
+            console.log(citta.value);
+            //console.log('errore input');
+            console.log(var1.test(citta))
+            document.getElementById("cityErrorMsg").innerHTML = "inserire una CITTÀ valido, senza numeri o caratteri speciali, dai 2 ai 30 caratteri.";
+
+        } else {
+            document.getElementById("cityErrorMsg").innerHTML = ""
+        }
+    });
+
+
+
 }
 
 

@@ -4,15 +4,15 @@ async function main() {
     let id = params.get("id");
     const response = await fetch('http://localhost:3000/api/products/' + id)
     const item = await response.json()
-
-    /* recupero prezzo, nome articolo e descrizione*/
     console.log(item)
 
+    /* RECUPERO prezzo, nome articolo e descrizione*/
+    
     document.querySelector("#price").innerText = item.price;
     document.querySelector("#title").innerText = item.name;
     document.querySelector("#description").innerText = item.description;
 
-    /* recupero immagine prodotto*/
+    /* RECUPERO immagine prodotto*/
 
     const fotografia = document.createElement("img");
     let baliseParent = document.getElementById("fotoCanape");
@@ -20,7 +20,7 @@ async function main() {
     fotografia.alt = item.altTxt;
     baliseParent.appendChild(fotografia);
 
-    /* rendere valore colori come opzione in select*/
+    /* RENDERE valore colori come opzione in select*/
 
     for (let colori of item.colors) {
         const option = document.createElement("option")
@@ -29,34 +29,28 @@ async function main() {
         selectColors.appendChild(option)
     }
 
-    /* errore browser*/
+    /* Evito errore browser*/
     if (typeof browser === "undefined") {
         var browser = chrome;
     }
 
-    /*recupero dei valori in localStorage*/
     const pulsante = document.getElementById("addToCart")
-    pulsante.addEventListener("click", function () {
-        if (quantity.value <= 0) {
+    pulsante.addEventListener("click", function () { 
+        if (quantity.value <= 0) {//Condizione QUANTITà
             alert("seleziona una quantità superiore a 0")
             return
         }
 
-      
-        
-
-      
-
-        /* recupero valori colore del select */
+        /* RECUPERO valori colore del select */
         var colors = document.getElementById("colors")
         var coloreSelezionato = colors.options[colors.selectedIndex].value;
-
-        if (coloreSelezionato === "") {
+ 
+        if (coloreSelezionato === "") {//Condizione COLORE
             alert('séléctionnez une couleur');
             return
           }
           
-        //definisco valori Array
+        //DEFINISCO valori Array
         const cartItems = JSON.parse(localStorage.getItem("carrello")) || []
         let cartItem = cartItems.find(function (_cartItem) {
                 return item._id === _cartItem.id && coloreSelezionato === _cartItem.colore;
@@ -75,8 +69,7 @@ async function main() {
             cartItems.push(cartItem)
         }
 
-       
-        //trasforma oggetto JS in Json
+        /*TRASFORMO oggetto JS in Json*/
 
         let carrello = JSON.stringify(cartItems);
         // console.log(carrello);
@@ -85,7 +78,6 @@ async function main() {
         //console.log(coloreSelezionato,item._id,quantity.value) //verifica valori inviati
     }
     )
-
 }
 
 
