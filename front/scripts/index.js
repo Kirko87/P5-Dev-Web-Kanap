@@ -1,9 +1,10 @@
 async function main(){  
     const response=await fetch('http://localhost:3000/api/products')
     const items=await response.json()
-    /* recupero di tutte le immagini prodotti*/
     console.log(items)
     
+    /* recupero di tutte le immagini prodotti*/
+   
     for (let immagini of items){
         console.log (immagini)
         const product=document.querySelector("#items-template").content.cloneNode(true)

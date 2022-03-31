@@ -104,8 +104,9 @@ async function main() {
 
         console.log(commande);
         console.log(commande.orderId);//id della comanda
+        console.log(rispostaServer);
 
-        /*INVIO ID comanda */
+       /*INVIO ID comanda */
         localStorage.setItem("idComanda", commande.orderId);
 
         var idNumber = commande.orderId
@@ -113,7 +114,7 @@ async function main() {
         const commandeButton = document.getElementById("order")  
         commandeButton.addEventListener('click', () => {
         
-            location.replace('http://localhost:3000/api/products/'+idNumber)
+            location.replace('http://192.168.0.20:5500/front/html/confirmation.html?idOrder='+idNumber)
             })
     
     
