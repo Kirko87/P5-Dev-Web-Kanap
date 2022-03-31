@@ -113,7 +113,7 @@ async function main() {
 
         const commandeButton = document.getElementById("order")  
         commandeButton.addEventListener('click', () => {
-        
+            
             location.replace('http://192.168.0.20:5500/front/html/confirmation.html?idOrder='+idNumber)
             })
     
