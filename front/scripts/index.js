@@ -3,11 +3,11 @@ async function main(){
     const items=await response.json()
     console.log(items)
     
-    /* recupero di tutte le immagini prodotti*/
+    /* RECUPERO del Node da API attraverso un boucle di alcuni elementi */
    
     for (let immagini of items){
         console.log (immagini)
-        const product=document.querySelector("#items-template").content.cloneNode(true)
+        const product=document.querySelector("#items-template").content.cloneNode(true) 
         product.querySelector(".productName").innerText=immagini.name
         product.querySelector(".productDescription").innerText=immagini.description
         product.querySelector(".productImage").src=immagini.imageUrl
@@ -15,17 +15,8 @@ async function main(){
         product.querySelector(".productColor").innerText=immagini.colors
         product.querySelector(".schedaProdotto").href="./product.html?id="+immagini._id
         const section=document.getElementById("items")
-        section.appendChild(product) // creo sezione product
-
-       
-        
-    }
-
-   
-    
-    
-    
-    
+        section.appendChild(product) 
+    } 
 }
 
 main()

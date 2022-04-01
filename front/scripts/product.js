@@ -1,4 +1,5 @@
 async function main() {
+    /* RECUPERO ID scheda prodotto con aggiunta a fine Url */
     var queryString = window.location.search;
     let params = new URLSearchParams(queryString);
     let id = params.get("id");
@@ -6,13 +7,13 @@ async function main() {
     const item = await response.json()
     console.log(item)
 
-    /* RECUPERO prezzo, nome articolo e descrizione*/
-    
+    /* RECUPERO prezzo, nome articolo e descrizione */
+
     document.querySelector("#price").innerText = item.price;
     document.querySelector("#title").innerText = item.name;
     document.querySelector("#description").innerText = item.description;
 
-    /* RECUPERO immagine prodotto*/
+    /* RECUPERO immagine prodotto */
 
     const fotografia = document.createElement("img");
     let baliseParent = document.getElementById("fotoCanape");
@@ -20,7 +21,7 @@ async function main() {
     fotografia.alt = item.altTxt;
     baliseParent.appendChild(fotografia);
 
-    /* RENDERE valore colori come opzione in select*/
+    /* DEFINIZIONE valore colori come opzione in select */
 
     for (let colori of item.colors) {
         const option = document.createElement("option")
@@ -29,32 +30,36 @@ async function main() {
         selectColors.appendChild(option)
     }
 
-    /* Evito errore browser*/
+    /* CORREZIONE errore browser */
+
     if (typeof browser === "undefined") {
         var browser = chrome;
     }
 
+    /* CORREZIONE errori nella selezione */
+
     const pulsante = document.getElementById("addToCart")
-    pulsante.addEventListener("click", function () { 
-        if (quantity.value <= 0) {//Condizione QUANTITà
+    pulsante.addEventListener("click", function () {
+        if (quantity.value <= 0) {//condizione "QUANTITà"
             alert("seleziona una quantità superiore a 0")
             return
         }
 
-        /* RECUPERO valori colore del select */
-        var colors = document.getElementById("colors")
+        var colors = document.getElementById("colors") 
         var coloreSelezionato = colors.options[colors.selectedIndex].value;
- 
-        if (coloreSelezionato === "") {//Condizione COLORE
+
+        if (coloreSelezionato === "") {//condizione "COLORE"
             alert('séléctionnez une couleur');
             return
-          }
-          
-        //DEFINISCO valori Array
+        }
+
+        /*DEFINIZIONE valori Array, (funzione per non ripetere la stringa dello stesso prodotto dello 
+        stesso colore quando aggiungo più pezzi al carrello) */
+
         const cartItems = JSON.parse(localStorage.getItem("carrello")) || []
         let cartItem = cartItems.find(function (_cartItem) {
-                return item._id === _cartItem.id && coloreSelezionato === _cartItem.colore;
-            })
+            return item._id === _cartItem.id && coloreSelezionato === _cartItem.colore;
+        })
         if (cartItem) {
             cartItem.quantita += parseInt(quantity.value);
 
@@ -69,17 +74,18 @@ async function main() {
             cartItems.push(cartItem)
         }
 
-        /*TRASFORMO oggetto JS in Json*/
+        /*TRASFORMAZIONE oggetto JS in Json*/
 
         let carrello = JSON.stringify(cartItems);
         // console.log(carrello);
+        
+        /*INVIO carrello a LocalStorage  */
 
         localStorage.setItem("carrello", carrello);
         //console.log(coloreSelezionato,item._id,quantity.value) //verifica valori inviati
     }
     )
 }
-
 
 main()
 

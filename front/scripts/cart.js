@@ -10,7 +10,9 @@ async function main() {
     const carrelloProdottiJs = JSON.parse(datiOggettiCestino)
     //console.log(carrelloProdottiJs);
 
-    const itemList = []
+    const itemList = [] //array vuoto per inserire i risultati
+
+    /* VISUALIZZAZIONE articoli del carrello con relativi dati */
 
     for (index in carrelloProdottiJs) {
         const oggettiCarrello = carrelloProdottiJs[index]
@@ -31,7 +33,7 @@ async function main() {
         const daEliminare = contenitorePrimo.querySelector("#cart__item")
         const deleteItemButton = contenitorePrimo.querySelector("#deleteItem")
 
-        //CHANGE quantity produits
+        /*INSERIMENTO del CAMBIO quantità prodotto*/
 
         modificaQ.addEventListener("change", function () {
             const quantityMOD = parseInt(modificaQ.value)
@@ -43,8 +45,7 @@ async function main() {
 
         })
 
-
-        //DELETE products
+        /*ELIMINAZIONE prodotto del carrello*/
 
         deleteItemButton.addEventListener("click", function () {
             /* "indexOf" restituisce un valore numerico che rappresenta la
@@ -61,8 +62,7 @@ async function main() {
 
         })
 
-        //registra modifiche in balise globale <section id="cart__items">
-        const baliseRec = document.getElementById("cart__items")
+        const baliseRec = document.getElementById("cart__items") //registra modifiche in balise globale <section id="cart__items">
         baliseRec.appendChild(contenitorePrimo)
     }
 
@@ -70,12 +70,12 @@ async function main() {
     calcolaTotale(carrelloProdottiJs, itemList)
     controlloNome()
 
-    /* SUBMIT del formulario con funzione*/
+    /* SUBMIT del formulario con funzione */
 
     document.getElementById("formulario").addEventListener('submit', async function (event) {
         event.preventDefault()
-        /* payload= dati da inviare*/
-        payload = {
+        
+        payload = { // payload= dati da inviare
             contact: {
                 firstName: nome.value,
                 lastName: cognome.value,
@@ -91,7 +91,7 @@ async function main() {
             }, [])
         }
 
-        console.table(payload);//".table" mette in  tabella il risultato
+        console.table(payload); //".table" mette in  tabella il risultato
         const rispostaServer = await fetch('http://localhost:3000/api/products/order', {
             method: "post",
             headers: {
@@ -103,18 +103,19 @@ async function main() {
 
 
         console.log(commande);
-        console.log(commande.orderId);//id della comanda
+        console.log(commande.orderId); //id della comanda
         console.log(rispostaServer);
 
        /*INVIO ID comanda */
-        localStorage.setItem("idComanda", commande.orderId);
+
+       // localStorage.setItem("idComanda", commande.orderId);
 
         var idNumber = commande.orderId
 
         const commandeButton = document.getElementById("order")  
         commandeButton.addEventListener('click', () => {
             
-            location.replace('http://192.168.0.20:5500/front/html/confirmation.html?idOrder='+idNumber)
+            location.replace('http://192.168.1.17:5500/front/html/confirmation.html?idOrder='+idNumber)
             })
     
     
@@ -124,12 +125,11 @@ async function main() {
 }
 
 
-/*FUNZIONE calcolaTotale function*/
+/* FUNZIONE calcolo del TOTALE */
 
 function calcolaTotale(cartProduits, listaElementi) {
     let totalQuantity = 0
     let totalPrice = 0
-
 
     for (cartItems of cartProduits) {
         const item = listaElementi.find(x => x._id === cartItems.id)
@@ -144,8 +144,7 @@ function calcolaTotale(cartProduits, listaElementi) {
 
 }
 
-
-/*FUNZIONE controllo campi tabella*/
+/* FUNZIONE controllo campi tabella */
 function controlloNome() {
 
     //console.log(nome);
@@ -208,12 +207,8 @@ function controlloNome() {
         }
     });
 
-
-
 }
 
-
 main(
-
 
 )
