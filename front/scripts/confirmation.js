@@ -10,10 +10,8 @@ let spanId = document.getElementById("orderId")
 spanId.innerHTML = "<br><br>" + params.get('idOrder') //+"<br>" + recupera
 //console.log();
 
-
-
 //localStorage.removeItem("idComanda");
-
+localStorage.removeItem("carrello");
 
 
 

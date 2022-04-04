@@ -111,15 +111,11 @@ async function main() {
        // localStorage.setItem("idComanda", commande.orderId);
 
         var idNumber = commande.orderId
-
-        const commandeButton = document.getElementById("order")  
-        commandeButton.addEventListener('click', () => {
-            
+        location.replace('http://192.168.1.17:5500/front/html/confirmation.html?idOrder='+idNumber)
+       /* const commandeButton = document.getElementById("order")  
+        commandeButton.addEventListener('click', () => { 
             location.replace('http://192.168.1.17:5500/front/html/confirmation.html?idOrder='+idNumber)
-            })
-    
-    
-
+            })*/
     })
     
 }
