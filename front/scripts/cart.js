@@ -6,10 +6,7 @@ let citta = document.getElementById("city")
 async function main() {
 
     var datiOggettiCestino = localStorage.getItem("carrello");
-    //console.log(datiOggettiCestino);
-    const carrelloProdottiJs = JSON.parse(datiOggettiCestino)
-    //console.log(carrelloProdottiJs);
-
+    const carrelloProdottiJs = JSON.parse(datiOggettiCestino) || []
     const itemList = [] //array vuoto per inserire i risultati
 
     /* VISUALIZZAZIONE articoli del carrello con relativi dati */
@@ -51,7 +48,6 @@ async function main() {
             /* "indexOf" restituisce un valore numerico che rappresenta la
              posizione dell’elemento nella stringa. Se non trova il valore restituisce -1. */
             const itemIndex = carrelloProdottiJs.indexOf(oggettiCarrello)
-            //console.log(itemIndex);
             carrelloProdottiJs.splice(itemIndex, 1);
             daEliminare.remove()
 
@@ -66,7 +62,6 @@ async function main() {
         baliseRec.appendChild(contenitorePrimo)
     }
 
-
     calcolaTotale(carrelloProdottiJs, itemList)
     controlloNome()
 
@@ -74,7 +69,20 @@ async function main() {
 
     document.getElementById("formulario").addEventListener('submit', async function (event) {
         event.preventDefault()
-        
+        if(nome.dataset.error ||cognome.dataset.error|| indirizzo.dataset.error|| citta.dataset.error){
+            alert('Merci de bien remplir le formulaire')
+            return}
+
+            const products= carrelloProdottiJs.reduce(function (idList, oggettiCarrello) {
+                for (let i = 0; i < oggettiCarrello.quantita; i++) {
+                    idList.push(oggettiCarrello.id)
+                }
+                return idList
+            }, [])
+
+        if(products.length===0){alert('Votre panier est vide')
+         return}
+
         payload = { // payload= dati da inviare
             contact: {
                 firstName: nome.value,
@@ -83,15 +91,10 @@ async function main() {
                 city: citta.value,
                 email: document.getElementById("email").value
             },
-            products: carrelloProdottiJs.reduce(function (idList, oggettiCarrello) {
-                for (let i = 0; i < oggettiCarrello.quantita; i++) {
-                    idList.push(oggettiCarrello.id)
-                }
-                return idList
-            }, [])
+           products
         }
 
-        console.table(payload); //".table" mette in  tabella il risultato
+        //console.table(payload); //".table" mette in  tabella il risultato
         const rispostaServer = await fetch('http://localhost:3000/api/products/order', {
             method: "post",
             headers: {
@@ -101,25 +104,13 @@ async function main() {
         })
         const commande = await rispostaServer.json();
 
-
-        console.log(commande);
-        console.log(commande.orderId); //id della comanda
-        console.log(rispostaServer);
-
        /*INVIO ID comanda */
 
-       // localStorage.setItem("idComanda", commande.orderId);
-
         var idNumber = commande.orderId
-        location.replace('http://192.168.1.17:5500/front/html/confirmation.html?idOrder='+idNumber)
-       /* const commandeButton = document.getElementById("order")  
-        commandeButton.addEventListener('click', () => { 
-            location.replace('http://192.168.1.17:5500/front/html/confirmation.html?idOrder='+idNumber)
-            })*/
+        location.replace('./confirmation.html?idOrder='+idNumber)
     })
     
 }
-
 
 /* FUNZIONE calcolo del TOTALE */
 
@@ -151,13 +142,11 @@ function controlloNome() {
     nome.addEventListener('input', () => {
 
         if (var1.test(nome.value) === false) {
-            console.log(nome.value);
-            //console.log('errore input');
-            console.log(var1.test(nome))
             document.getElementById("firstNameErrorMsg").innerHTML = "inserire un NOME valido, senza numeri o caratteri speciali, dai 2 ai 30 caratteri.";
-
+            nome.dataset.error=true
         } else {
             document.getElementById("firstNameErrorMsg").innerHTML = ""
+            delete nome.dataset.error
         }
     });
 
@@ -165,13 +154,11 @@ function controlloNome() {
     cognome.addEventListener('input', () => {
 
         if (var1.test(cognome.value) === false) {
-            console.log(cognome.value);
-            //console.log('errore input');
-            console.log(var1.test(cognome))
             document.getElementById("lastNameErrorMsg").innerHTML = "inserire un COGNOME valido, senza numeri o caratteri speciali, dai 2 ai 30 caratteri.";
-
+            cognome.dataset.error=true
         } else {
             document.getElementById("lastNameErrorMsg").innerHTML = ""
+            delete cognome.dataset.error
         }
     });
 
@@ -179,13 +166,11 @@ function controlloNome() {
     indirizzo.addEventListener('input', () => {
 
         if (var2.test(indirizzo.value) === false) {
-            console.log(indirizzo.value);
-            //console.log('errore input');
-            console.log(var2.test(indirizzo))
             document.getElementById("addressErrorMsg").innerHTML = "inserire un INDIRIZZO valido.";
-
+             indirizzo.dataset.error=true
         } else {
             document.getElementById("addressErrorMsg").innerHTML = ""
+            delete indirizzo.dataset.error
         }
     });
 
@@ -193,13 +178,11 @@ function controlloNome() {
     citta.addEventListener('input', () => {
 
         if (var1.test(citta.value) === false) {
-            console.log(citta.value);
-            //console.log('errore input');
-            console.log(var1.test(citta))
             document.getElementById("cityErrorMsg").innerHTML = "inserire una CITTÀ valido, senza numeri o caratteri speciali, dai 2 ai 30 caratteri.";
-
+            citta.dataset.error=true
         } else {
             document.getElementById("cityErrorMsg").innerHTML = ""
+            delete citta.dataset.error
         }
     });
 

@@ -1,12 +1,10 @@
 async function main(){  
     const response=await fetch('http://localhost:3000/api/products')
     const items=await response.json()
-    console.log(items)
     
     /* RECUPERO del Node da API attraverso un boucle di alcuni elementi */
    
     for (let immagini of items){
-        console.log (immagini)
         const product=document.querySelector("#items-template").content.cloneNode(true) 
         product.querySelector(".productName").innerText=immagini.name
         product.querySelector(".productDescription").innerText=immagini.description

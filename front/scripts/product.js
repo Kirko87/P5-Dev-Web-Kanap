@@ -5,7 +5,6 @@ async function main() {
     let id = params.get("id");
     const response = await fetch('http://localhost:3000/api/products/' + id)
     const item = await response.json()
-    console.log(item)
 
     /* RECUPERO prezzo, nome articolo e descrizione */
 
@@ -62,14 +61,11 @@ async function main() {
         })
         if (cartItem) {
             cartItem.quantita += parseInt(quantity.value);
-
         } else {
             cartItem = {
-
                 id: item._id,
                 colore: coloreSelezionato,
                 quantita: parseInt(quantity.value)
-
             }
             cartItems.push(cartItem)
         }
@@ -77,12 +73,10 @@ async function main() {
         /*TRASFORMAZIONE oggetto JS in Json*/
 
         let carrello = JSON.stringify(cartItems);
-        // console.log(carrello);
         
         /*INVIO carrello a LocalStorage  */
 
         localStorage.setItem("carrello", carrello);
-        //console.log(coloreSelezionato,item._id,quantity.value) //verifica valori inviati
     }
     )
 }
