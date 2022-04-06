@@ -69,19 +69,22 @@ async function main() {
 
     document.getElementById("formulario").addEventListener('submit', async function (event) {
         event.preventDefault()
-        if(nome.dataset.error ||cognome.dataset.error|| indirizzo.dataset.error|| citta.dataset.error){
+        if (nome.dataset.error || cognome.dataset.error || indirizzo.dataset.error || citta.dataset.error) {
             alert('Merci de bien remplir le formulaire')
-            return}
+            return
+        }
 
-            const products= carrelloProdottiJs.reduce(function (idList, oggettiCarrello) {
-                for (let i = 0; i < oggettiCarrello.quantita; i++) {
-                    idList.push(oggettiCarrello.id)
-                }
-                return idList
-            }, [])
+        const products = carrelloProdottiJs.reduce(function (idList, oggettiCarrello) {
+            for (let i = 0; i < oggettiCarrello.quantita; i++) {
+                idList.push(oggettiCarrello.id)
+            }
+            return idList
+        }, [])
 
-        if(products.length===0){alert('Votre panier est vide')
-         return}
+        if (products.length === 0) {
+            alert('Votre panier est vide')
+            return
+        }
 
         payload = { // payload= dati da inviare
             contact: {
@@ -91,7 +94,7 @@ async function main() {
                 city: citta.value,
                 email: document.getElementById("email").value
             },
-           products
+            products
         }
 
         //console.table(payload); //".table" mette in  tabella il risultato
@@ -104,12 +107,12 @@ async function main() {
         })
         const commande = await rispostaServer.json();
 
-       /*INVIO ID comanda */
+        /*INVIO ID comanda */
 
         var idNumber = commande.orderId
-        location.replace('./confirmation.html?idOrder='+idNumber)
+        location.replace('./confirmation.html?idOrder=' + idNumber)
     })
-    
+
 }
 
 /* FUNZIONE calcolo del TOTALE */
@@ -143,7 +146,7 @@ function controlloNome() {
 
         if (var1.test(nome.value) === false) {
             document.getElementById("firstNameErrorMsg").innerHTML = "inserire un NOME valido, senza numeri o caratteri speciali, dai 2 ai 30 caratteri.";
-            nome.dataset.error=true
+            nome.dataset.error = true
         } else {
             document.getElementById("firstNameErrorMsg").innerHTML = ""
             delete nome.dataset.error
@@ -155,7 +158,7 @@ function controlloNome() {
 
         if (var1.test(cognome.value) === false) {
             document.getElementById("lastNameErrorMsg").innerHTML = "inserire un COGNOME valido, senza numeri o caratteri speciali, dai 2 ai 30 caratteri.";
-            cognome.dataset.error=true
+            cognome.dataset.error = true
         } else {
             document.getElementById("lastNameErrorMsg").innerHTML = ""
             delete cognome.dataset.error
@@ -167,7 +170,7 @@ function controlloNome() {
 
         if (var2.test(indirizzo.value) === false) {
             document.getElementById("addressErrorMsg").innerHTML = "inserire un INDIRIZZO valido.";
-             indirizzo.dataset.error=true
+            indirizzo.dataset.error = true
         } else {
             document.getElementById("addressErrorMsg").innerHTML = ""
             delete indirizzo.dataset.error
@@ -179,7 +182,7 @@ function controlloNome() {
 
         if (var1.test(citta.value) === false) {
             document.getElementById("cityErrorMsg").innerHTML = "inserire una CITTÀ valido, senza numeri o caratteri speciali, dai 2 ai 30 caratteri.";
-            citta.dataset.error=true
+            citta.dataset.error = true
         } else {
             document.getElementById("cityErrorMsg").innerHTML = ""
             delete citta.dataset.error

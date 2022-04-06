@@ -44,7 +44,7 @@ async function main() {
             return
         }
 
-        var colors = document.getElementById("colors") 
+        var colors = document.getElementById("colors")
         var coloreSelezionato = colors.options[colors.selectedIndex].value;
 
         if (coloreSelezionato === "") {//condizione "COLORE"
@@ -73,7 +73,7 @@ async function main() {
         /*TRASFORMAZIONE oggetto JS in Json*/
 
         let carrello = JSON.stringify(cartItems);
-        
+
         /*INVIO carrello a LocalStorage  */
 
         localStorage.setItem("carrello", carrello);
