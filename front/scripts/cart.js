@@ -145,10 +145,10 @@ function controlloNome() {
     nome.addEventListener('input', () => {
 
         if (var1.test(nome.value) === false) {
-            document.getElementById("firstNameErrorMsg").innerHTML = "inserire un NOME valido, senza numeri o caratteri speciali, dai 2 ai 30 caratteri.";
+            document.getElementById("firstNameErrorMsg").innerText = "inserire un NOME valido, senza numeri o caratteri speciali, dai 2 ai 30 caratteri.";
             nome.dataset.error = true
         } else {
-            document.getElementById("firstNameErrorMsg").innerHTML = ""
+            document.getElementById("firstNameErrorMsg").innerText= ""
             delete nome.dataset.error
         }
     });
@@ -157,10 +157,10 @@ function controlloNome() {
     cognome.addEventListener('input', () => {
 
         if (var1.test(cognome.value) === false) {
-            document.getElementById("lastNameErrorMsg").innerHTML = "inserire un COGNOME valido, senza numeri o caratteri speciali, dai 2 ai 30 caratteri.";
+            document.getElementById("lastNameErrorMsg").innerText = "inserire un COGNOME valido, senza numeri o caratteri speciali, dai 2 ai 30 caratteri.";
             cognome.dataset.error = true
         } else {
-            document.getElementById("lastNameErrorMsg").innerHTML = ""
+            document.getElementById("lastNameErrorMsg").innerText = ""
             delete cognome.dataset.error
         }
     });
@@ -169,10 +169,10 @@ function controlloNome() {
     indirizzo.addEventListener('input', () => {
 
         if (var2.test(indirizzo.value) === false) {
-            document.getElementById("addressErrorMsg").innerHTML = "inserire un INDIRIZZO valido.";
+            document.getElementById("addressErrorMsg").innerText = "inserire un INDIRIZZO valido.";
             indirizzo.dataset.error = true
         } else {
-            document.getElementById("addressErrorMsg").innerHTML = ""
+            document.getElementById("addressErrorMsg").innerText = ""
             delete indirizzo.dataset.error
         }
     });
@@ -181,10 +181,10 @@ function controlloNome() {
     citta.addEventListener('input', () => {
 
         if (var1.test(citta.value) === false) {
-            document.getElementById("cityErrorMsg").innerHTML = "inserire una CITTÀ valido, senza numeri o caratteri speciali, dai 2 ai 30 caratteri.";
+            document.getElementById("cityErrorMsg").innerText = "inserire una CITTÀ valido, senza numeri o caratteri speciali, dai 2 ai 30 caratteri.";
             citta.dataset.error = true
         } else {
-            document.getElementById("cityErrorMsg").innerHTML = ""
+            document.getElementById("cityErrorMsg").innerText = ""
             delete citta.dataset.error
         }
     });
